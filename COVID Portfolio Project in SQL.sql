@@ -69,7 +69,8 @@ order by 1,2
 with popvsvacc (continent,Location, Date, Population, New_vaccinations, RollingPeopleVaccinated)
 as(
 
-select dea.continent,dea.location,dea.date,dea.population,vac.new_vaccinations,sum(convert(int,vac.new_vaccinations)) over(partition by dea.location,dea.date) as rollingpeoplevaccinated
+select dea.continent,dea.location,dea.date,dea.population,vac.new_vaccinations,
+sum(convert(int,vac.new_vaccinations)) over(partition by dea.location,dea.date) as rollingpeoplevaccinated
 from  ['covidDeath'] dea
 join ['covidVaccinations'] vac
 on dea.location = vac.location and dea.date = vac.date
@@ -93,7 +94,8 @@ RollingpeopleVaccinated numeric)
 
 Insert into #pecentpopulationsvaccinated
 
-select dea.continent,dea.location,dea.date,dea.population,vac.new_vaccinations,sum(convert(int,vac.new_vaccinations)) over(partition by dea.location,dea.date) as RollingPeopleVaccinated 
+select dea.continent,dea.location,dea.date,dea.population,vac.new_vaccinations,
+sum(convert(int,vac.new_vaccinations)) over(partition by dea.location,dea.date) as RollingPeopleVaccinated 
 from  ['covidDeath'] dea
 join ['covidVaccinations'] vac
 on dea.location = vac.location and dea.date = vac.date
@@ -108,7 +110,8 @@ select *,(RollingPeopleVaccinated/Population)*100 from #pecentpopulationsvaccina
 --Creating view to store data for later visualizations
 
 create view PercentPopulationVaccinated as
-select dea.continent,dea.location,dea.date,dea.population,vac.new_vaccinations,sum(convert(int,vac.new_vaccinations)) over(partition by dea.location,dea.date) as RollingPeopleVaccinated 
+select dea.continent,dea.location,dea.date,dea.population,vac.new_vaccinations,
+sum(convert(int,vac.new_vaccinations)) over(partition by dea.location,dea.date) as RollingPeopleVaccinated 
 from  ['covidDeath'] dea
 join ['covidVaccinations'] vac
 on dea.location = vac.location and dea.date = vac.date
